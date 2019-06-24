@@ -207,3 +207,269 @@ function chunkArrayInGroups(arr, size) {
    
   
   chunkArrayInGroups(["a", "b", "c", "d"], 2);
+
+  //constructor creation and invocation
+
+function Dog(name, color) {
+
+  this.name = name,
+
+  this.color = color,
+
+  this.numLegs = 4 //this would better fit as a prototype property VVVV   to use less memory
+
+}
+
+ 
+
+//Dog.prototype.numLegs = 4;
+
+let terrier = new Dog("Luna", "dapple");
+
+ 
+
+ 
+
+//add prototype props, checks for own/prototype props
+
+function Dog(name) {
+
+  this.name = name;
+
+}
+
+ 
+
+Dog.prototype.numLegs = 4;
+
+ 
+
+//for multiple prototype properties, just define the prototype like a normal object
+
+Dog.prototype = {
+
+  constructor : Dog, //when doing this, the constructor proprty must manually be entered. Otherwise, there is no more constructor property
+
+  numLegs : 4,
+
+  eat : function() {
+
+    console.log("nom nom nom");
+
+  },
+
+  describe : function() {
+
+    console.log("I am called " + this.name);
+
+  }
+
+};
+
+ 
+
+let beagle = new Dog("Snoopy");
+
+ 
+
+let ownProps = [];
+
+let prototypeProps = [];
+
+ 
+
+// Add your code below this line
+
+ 
+
+for (let property in beagle) {
+
+  if(beagle.hasOwnProperty(property)) {
+
+    ownProps.push(property)
+
+  } else {
+
+    prototypeProps.push(property)
+
+  }
+
+}
+
+ 
+
+//use instanceof to compare to defined constructor. Use constructor to compare unknown constructors. VVVV
+
+ 
+
+function Dog(name) {
+
+  this.name = name;
+
+}
+
+ 
+
+function joinDogFraternity(candidate) {
+
+  if (candidate.constructor === Dog) {
+
+    return true;
+
+  } else {
+
+    return false;
+
+  }
+
+}
+
+ 
+
+//another way to check if object is part of prototype/constructor
+
+Dog.prototype.isPrototypeOf(beagle);
+
+ 
+
+//When creating an object off a prototype, use //Object.create(obj.prototype);
+
+let beagle = Object.create(Animal.prototype); // Change this line
+
+ 
+
+//Or if creating a subtype prototype so additional sub inheritances can be set up
+
+Dog.prototype = Object.create(Animal.prototype);
+
+ 
+
+//The constructor property does need to be manually reset in this instance
+
+Dog.prototype.constructor = Dog;
+
+ 
+
+//Here it is all together, with additional properties being added individually
+
+Dog.prototype = Object.create(Animal.prototype);
+
+Dog.prototype.constructor = Dog;
+
+Dog.prototype.bark = function () {
+
+    console.log("Woof!");
+
+}
+
+ 
+
+//mixins allow you to add shared properties in unrelated objects
+
+let bird = {
+
+  name: "Donald",
+
+  numLegs: 2
+
+};
+
+ 
+
+let boat = {
+
+  name: "Warrior",
+
+  type: "race-boat"
+
+};
+
+ 
+
+let glideMixin = function(obj) {
+
+    obj.glide = function() {
+
+        console.log("I'm gliding!");//both console.log and return create weird data, look into this.
+
+    }
+
+}
+
+ 
+
+glideMixin(bird);
+
+glideMixin(boat);
+
+ 
+
+console.log(bird.glide);
+
+console.log(boat.glide);
+
+ 
+
+// closures allow object properties to be private (immutable) by setting a variable with the value instead of the property:key pair. A newproperty is then created that can access the variable.
+
+function Bird() {
+
+  let weight = 15;
+
+  this.getWeight = function() {
+
+    return weight;
+
+  }
+
+}
+
+ 
+
+bird.getWeight(); //returns 15
+
+ 
+
+//IIFE imediately invoked function expression - not sure on why
+
+//wrap an anonymous function is parentheses, follow it with the //invocation (); the function will immediately happen.
+
+(function () {
+
+  console.log("I don't understand IIFE's");
+
+})();
+
+ 
+
+//A module using IIFE, I understand the objective, not the process
+
+ 
+
+let funModule = (function() {
+
+  return {
+
+    isCuteMixin: function(obj) {
+
+      obj.isCute = function() {
+
+        return true;
+
+      };
+
+    },
+
+    singMixin: function(obj) {
+
+      obj.sing = function() {
+
+        console.log("Singing to an awesome tune");
+
+      };
+
+    }
+
+  }
+
+})();
